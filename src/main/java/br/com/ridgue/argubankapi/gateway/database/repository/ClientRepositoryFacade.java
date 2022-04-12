@@ -9,4 +9,5 @@ public interface ClientRepositoryFacade {
     List<Client> findAll();
     Client findById(Long id) throws ResourceNotFoundException;
     List<Client> findByName(String name) throws ResourceNotFoundException;
+    void create(Client client);
 }

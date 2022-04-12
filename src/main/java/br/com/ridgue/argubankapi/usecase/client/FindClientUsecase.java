@@ -1,4 +1,4 @@
-package br.com.ridgue.argubankapi.usecase;
+package br.com.ridgue.argubankapi.usecase.client;
 
 import br.com.ridgue.argubankapi.domain.ClientTO;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;

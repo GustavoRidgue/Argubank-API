@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

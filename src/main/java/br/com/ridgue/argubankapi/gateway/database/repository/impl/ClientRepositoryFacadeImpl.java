@@ -31,4 +31,9 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
 
         return byName;
     }
+
+    @Override
+    public void create(Client client) {
+        clientRepository.save(client);
+    }
 }

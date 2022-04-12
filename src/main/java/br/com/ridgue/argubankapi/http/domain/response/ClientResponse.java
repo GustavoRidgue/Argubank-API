@@ -10,10 +10,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data()
 @AllArgsConstructor
-public class FindClientResponse extends DefaultResponse {
+public class ClientResponse extends DefaultResponse {
     private List<ClientTO> clientTOS;
 
-    public FindClientResponse(String status, List<String> messages) {
+    public ClientResponse(String status, List<String> messages) {
         super(status, messages);
     }
 }
