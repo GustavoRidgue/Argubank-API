@@ -34,4 +34,8 @@ public class AlterClientUseCase {
 
         return clientBuilder.build(client);
     }
+
+    public void delete(Long id) {
+        clientRepositoryFacade.delete(id);
+    }
 }

@@ -36,4 +36,9 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
     public void save(Client client) {
         clientRepository.save(client);
     }
+
+    @Override
+    public void delete(Long id) {
+        clientRepository.deleteById(id);
+    }
 }

@@ -7,6 +7,7 @@ import br.com.ridgue.argubankapi.http.domain.response.ClientResponse;
 import br.com.ridgue.argubankapi.usecase.client.AlterClientUseCase;
 import br.com.ridgue.argubankapi.usecase.client.FindClientUsecase;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -79,6 +80,23 @@ public class ClientWS {
         try {
             ClientTO clientTO = alterClientUseCase.update(id, request);
             return ResponseEntity.ok(new ClientResponse(Collections.singletonList(clientTO)));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(
+                    new ClientResponse("NOT_FOUND", Collections.singletonList("Resource " + id + " not found")));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    new ClientResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
+        }
+    }
+
+    @DeleteMapping(ROOT_API_WS_DELETE_CLIENT)
+    public ResponseEntity<ClientResponse> delete(@PathVariable("id") Long id) {
+        try {
+            alterClientUseCase.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException | NullPointerException e) {
+            return ResponseEntity.status(404).body(
+                    new ClientResponse("NOT_FOUND", Collections.singletonList("Resource " + id + " not found")));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(
                     new ClientResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
