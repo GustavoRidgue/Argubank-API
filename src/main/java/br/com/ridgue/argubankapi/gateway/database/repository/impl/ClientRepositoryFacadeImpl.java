@@ -33,7 +33,7 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
     }
 
     @Override
-    public void create(Client client) {
+    public void save(Client client) {
         clientRepository.save(client);
     }
 }

@@ -2,7 +2,7 @@ package br.com.ridgue.argubankapi.http.ws;
 
 import br.com.ridgue.argubankapi.domain.ClientTO;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
-import br.com.ridgue.argubankapi.http.domain.request.CreateClientRequest;
+import br.com.ridgue.argubankapi.http.domain.request.ClientRequest;
 import br.com.ridgue.argubankapi.http.domain.response.ClientResponse;
 import br.com.ridgue.argubankapi.usecase.client.AlterClientUseCase;
 import br.com.ridgue.argubankapi.usecase.client.FindClientUsecase;
@@ -62,12 +62,23 @@ public class ClientWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CLIENT)
-    public ResponseEntity<ClientResponse> create(@RequestBody CreateClientRequest request, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<ClientResponse> create(@RequestBody ClientRequest request, UriComponentsBuilder uriComponentsBuilder) {
         try {
             ClientTO clientTO = alterClientUseCase.create(request);
             URI uri = uriComponentsBuilder.path(ROOT_API_PATH + ROOT_API_WS_FIND_CLIENT_BY_NAME).buildAndExpand(clientTO.getId()).toUri();
 
             return ResponseEntity.created(uri).body(new ClientResponse(Collections.singletonList(clientTO)));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    new ClientResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
+        }
+    }
+
+    @PutMapping(ROOT_API_WS_UPDATE_CLIENT)
+    public ResponseEntity<ClientResponse> update(@PathVariable("id") Long id, @RequestBody ClientRequest request) {
+        try {
+            ClientTO clientTO = alterClientUseCase.update(id, request);
+            return ResponseEntity.ok(new ClientResponse(Collections.singletonList(clientTO)));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(
                     new ClientResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));

@@ -9,4 +9,5 @@ public final class URLMapping {
     public static final String ROOT_API_WS_FIND_CLIENT_BY_ID = "/client/{id}";
     public static final String ROOT_API_WS_FIND_CLIENT_BY_NAME = "/client/name/{name}";
     public static final String ROOT_API_WS_CREATE_CLIENT = "/client/create";
+    public static final String ROOT_API_WS_UPDATE_CLIENT = "/client/update/{id}";
 }

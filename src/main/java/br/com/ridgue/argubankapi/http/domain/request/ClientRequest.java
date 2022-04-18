@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreateClientRequest {
+public class ClientRequest {
     private String name;
 }
