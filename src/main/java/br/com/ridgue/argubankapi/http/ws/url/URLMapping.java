@@ -11,4 +11,12 @@ public final class URLMapping {
     public static final String ROOT_API_WS_CREATE_CLIENT = "/client/create";
     public static final String ROOT_API_WS_UPDATE_CLIENT = "/client/update/{id}";
     public static final String ROOT_API_WS_DELETE_CLIENT = "/client/delete/{id}";
+
+    public static final String ROOT_API_WS_FIND_ALL_CITY = "/city/all";
+    public static final String ROOT_API_WS_FIND_CITY_BY_ID = "/city/{id}";
+    public static final String ROOT_API_WS_FIND_CITY_BY_NAME = "/city/name/{name}";
+
+    public static final String ROOT_API_WS_FIND_ALL_STATE = "/state/all";
+    public static final String ROOT_API_WS_FIND_STATE_BY_ID = "/state/{id}";
+    public static final String ROOT_API_WS_FIND_STATE_BY_NAME = "/state/name/{name}";
 }

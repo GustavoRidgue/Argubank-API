@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,36 +20,16 @@ public class FindClientUsecase {
 
     public List<ClientTO> findAll() {
         List<Client> clients = clientRepositoryFacade.findAll();
-        List<ClientTO> clientTOS = new ArrayList<>();
-
-        for (Client client : clients) {
-            ClientTO to = new ClientTO();
-            to.setId(client.getId());
-            to.setName(client.getName());
-
-            clientTOS.add(to);
-        }
-
-        return clientTOS;
+        return clientBuilder.build(clients);
     }
 
     public ClientTO findById(Long id) throws ResourceNotFoundException {
-        Client byId = clientRepositoryFacade.findById(id);
-        return clientBuilder.build(byId);
+        Client client = clientRepositoryFacade.findById(id);
+        return clientBuilder.build(client);
     }
 
     public List<ClientTO> findByName(String name) throws ResourceNotFoundException {
         List<Client> clients = clientRepositoryFacade.findByName(name);
-        List<ClientTO> clientTOS = new ArrayList<>();
-
-        for (Client client : clients) {
-            ClientTO to = new ClientTO();
-            to.setId(client.getId());
-            to.setName(client.getName());
-
-            clientTOS.add(to);
-        }
-
-        return clientTOS;
+        return clientBuilder.build(clients);
     }
 }

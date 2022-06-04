@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -20,6 +23,16 @@ public class AlterClientUseCase {
     public ClientTO create(ClientRequest request) {
         Client client = new Client();
         client.setName(request.getName());
+        client.setCpf(request.getCpf());
+        client.setRg(request.getRg());
+        client.setCnh(request.getCnh());
+        client.setEmail(request.getEmail());
+        client.setPassword(request.getPassword());
+        client.setPhoneNumber(request.getPhoneNumber());
+        client.setBirthDate(request.getBirthDate());
+        client.setAge(Period.between(request.getBirthDate(), LocalDate.now()).getYears());
+        client.setActive(true);
+        client.setAddress(request.getAddress());
 
         clientRepositoryFacade.save(client);
 

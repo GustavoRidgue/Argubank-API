@@ -18,6 +18,17 @@ public class ClientBuilder {
         ClientTO to = new ClientTO();
         to.setId(client.getId());
         to.setName(client.getName());
+        to.setName(client.getName());
+        to.setCpf(client.getCpf());
+        to.setRg(client.getRg());
+        to.setCnh(client.getCnh());
+        to.setEmail(client.getEmail());
+        to.setPassword(client.getPassword());
+        to.setPhoneNumber(client.getPhoneNumber());
+        to.setBirthDate(client.getBirthDate());
+        to.setAge(client.getAge());
+        to.setActive(client.isActive());
+        to.setAddress(client.getAddress());
         return to;
     }
 

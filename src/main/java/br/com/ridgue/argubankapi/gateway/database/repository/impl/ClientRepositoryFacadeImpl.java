@@ -21,13 +21,13 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
     @Override
     public Client findById(Long id) throws ResourceNotFoundException {
         return clientRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Test " + id + " not found"));
+                () -> new ResourceNotFoundException("Client " + id + " not found"));
     }
 
     @Override
     public List<Client> findByName(String name) throws ResourceNotFoundException {
         List<Client> byName = clientRepository.findByName(name);
-        if (byName.isEmpty()) throw new ResourceNotFoundException("Test " + name + " not found");
+        if (byName.isEmpty()) throw new ResourceNotFoundException("Client " + name + " not found");
 
         return byName;
     }

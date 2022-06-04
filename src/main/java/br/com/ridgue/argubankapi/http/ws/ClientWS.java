@@ -7,12 +7,14 @@ import br.com.ridgue.argubankapi.http.domain.response.ClientResponse;
 import br.com.ridgue.argubankapi.usecase.client.AlterClientUseCase;
 import br.com.ridgue.argubankapi.usecase.client.FindClientUsecase;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static br.com.ridgue.argubankapi.http.ws.url.BaseWS.INTERNAL_MESSAGE_ERROR;
@@ -22,6 +24,7 @@ import static br.com.ridgue.argubankapi.http.ws.url.URLMapping.*;
 @RestController
 @RequestMapping(ROOT_API_PATH)
 @AllArgsConstructor
+@Slf4j
 public class ClientWS {
     private final FindClientUsecase findClientUsecase;
     private final AlterClientUseCase alterClientUseCase;
@@ -31,6 +34,7 @@ public class ClientWS {
         try {
             return ResponseEntity.ok(new ClientResponse(findClientUsecase.findAll()));
         } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()));
             return ResponseEntity.status(500).body(
                     new ClientResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
         }
