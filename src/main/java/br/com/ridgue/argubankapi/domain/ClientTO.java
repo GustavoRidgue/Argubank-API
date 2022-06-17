@@ -1,5 +1,6 @@
 package br.com.ridgue.argubankapi.domain;
 
+import br.com.ridgue.argubankapi.gateway.database.entity.Account;
 import br.com.ridgue.argubankapi.gateway.database.entity.embadded.Address;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class ClientTO {
     private String password;
     private LocalDate birthDate;
     private Integer age;
+    private Account account;
     private boolean active;
     private Address address;
 }

@@ -20,7 +20,7 @@ public class City {
 
     @Column(nullable = false)
     private String name;
-//
-//    @ManyToOne
-//    private State state;
+
+    @ManyToOne
+    private State state;
 }

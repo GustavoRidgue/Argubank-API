@@ -27,6 +27,7 @@ public class ClientBuilder {
         to.setPhoneNumber(client.getPhoneNumber());
         to.setBirthDate(client.getBirthDate());
         to.setAge(client.getAge());
+        to.setAccount(client.getAccount());
         to.setActive(client.isActive());
         to.setAddress(client.getAddress());
         return to;

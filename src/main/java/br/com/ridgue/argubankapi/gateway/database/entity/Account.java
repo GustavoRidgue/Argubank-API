@@ -1,13 +1,13 @@
 package br.com.ridgue.argubankapi.gateway.database.entity;
 
-import br.com.ridgue.argubankapi.gateway.database.entity.embadded.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,43 +15,33 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
-public class Client {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "client")
-    private Account account;
+    @OneToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private Client client;
 
     @Column(nullable = false)
-    private String name;
+    private String bank;
 
     @Column(nullable = false)
-    private String cpf;
-
-    private String rg;
-
-    private String cnh;
+    private Integer agency;
 
     @Column(nullable = false)
-    private String phoneNumber;
+    private String number;
 
     @Column(nullable = false)
-    private String email;
+    private Integer digit;
 
     @Column(nullable = false)
-    private String password;
+    private BigDecimal amount;
 
-    @Column(nullable = false)
-    private LocalDate birthDate;
-
-    @Column(nullable = false)
-    private Integer age;
+    @OneToMany(mappedBy = "account")
+    private List<Card> cards;
 
     @Column(nullable = false)
     private boolean active;
-
-    @Embedded
-    @Column(nullable = false)
-    private Address address;
 }
