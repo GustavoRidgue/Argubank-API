@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,7 +28,7 @@ public class ClientBuilder {
         to.setPhoneNumber(client.getPhoneNumber());
         to.setBirthDate(client.getBirthDate());
         to.setAge(client.getAge());
-        to.setAccount(client.getAccount());
+        to.setAccountId(client.getAccount() == null ? null : client.getAccount().getId());
         to.setActive(client.isActive());
         to.setAddress(client.getAddress());
         return to;

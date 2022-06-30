@@ -2,26 +2,31 @@ package br.com.ridgue.argubankapi.gateway.database.entity;
 
 import br.com.ridgue.argubankapi.gateway.database.entity.enums.CardLevel;
 import br.com.ridgue.argubankapi.gateway.database.entity.enums.CardType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table
+@Table(name = "card")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="account_id", nullable=false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id", insertable = false, updatable = false)
     private Account account;
 
     @Column(nullable = false)
@@ -37,4 +42,10 @@ public class Card {
 
     @Column(nullable = false)
     private boolean active;
+
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 }

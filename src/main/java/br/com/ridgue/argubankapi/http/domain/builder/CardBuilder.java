@@ -17,7 +17,7 @@ public class CardBuilder {
 
         CardTO to = new CardTO();
         to.setId(card.getId());
-        to.setAccount(card.getAccount());
+        to.setAccountId((card.getAccount() == null ? null : card.getAccount().getId()));
         to.setNumber(card.getNumber());
         to.setType(card.getType());
         to.setLevel(card.getLevel());

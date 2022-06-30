@@ -20,7 +20,7 @@ public class ClientTO {
     private String password;
     private LocalDate birthDate;
     private Integer age;
-    private Account account;
+    private Long accountId;
     private boolean active;
     private Address address;
 }

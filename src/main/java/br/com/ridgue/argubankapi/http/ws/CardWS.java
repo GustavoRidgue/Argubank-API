@@ -26,8 +26,8 @@ public class CardWS {
     private final FindCardUsecase findCardUsecase;
     private final AlterCardUseCase alterCardUseCase;
 
-    @GetMapping(ROOT_API_WS_FIND_ALL_CARD)
-    public ResponseEntity<CardResponse> findAll() {
+    @GetMapping(ROOT_API_WS_ALL_CARD)
+    public ResponseEntity<CardResponse> findByAll() {
         try {
             return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll()));
         } catch (Exception e) {
@@ -37,18 +37,8 @@ public class CardWS {
         }
     }
 
-    @GetMapping(ROOT_API_WS_FIND_CARD_BY_ID)
-    public ResponseEntity<CardResponse> findById(@PathVariable("id") Long id) {
-        try {
-            return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findById(id))));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new CardResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
-    }
-
     @GetMapping(ROOT_API_WS_FIND_ALL_CARD)
-    public ResponseEntity<CardResponse> findAll(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<CardResponse> findByAll(@PathVariable("id") Long accountId) {
         try {
             return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll(accountId)));
         } catch (Exception e) {
@@ -59,8 +49,8 @@ public class CardWS {
     }
 
     @GetMapping(ROOT_API_WS_FIND_CARD_BY_ID)
-    public ResponseEntity<CardResponse> findById(@PathVariable("accountId") Long accountId,
-                                                 @PathVariable("id") Long id) {
+    public ResponseEntity<CardResponse> findById(@PathVariable("id") Long accountId,
+                                                 @PathVariable("cardId") Long id) {
         try {
             return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findById(accountId, id))));
         } catch (Exception e) {
@@ -70,7 +60,7 @@ public class CardWS {
     }
 
     @GetMapping(ROOT_API_WS_FIND_CARD_BY_NUMBER)
-    public ResponseEntity<CardResponse> findByNumber(@PathVariable("accountId") Long accountId,
+    public ResponseEntity<CardResponse> findByNumber(@PathVariable("id") Long accountId,
                                                      @PathVariable("number") String number) {
         try {
             return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findByNumber(accountId, number))));
@@ -81,7 +71,7 @@ public class CardWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CARD)
-    public ResponseEntity<CardResponse> create(@PathVariable("accountId") Long accountId,
+    public ResponseEntity<CardResponse> create(@PathVariable("id") Long accountId,
                                                @RequestBody CardRequest request,
                                                UriComponentsBuilder uriComponentsBuilder) {
         try {

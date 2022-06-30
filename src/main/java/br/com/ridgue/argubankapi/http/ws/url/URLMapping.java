@@ -20,10 +20,10 @@ public final class URLMapping {
     public static final String ROOT_API_WS_UPDATE_ACCOUNT = "/account/update/{id}";
     public static final String ROOT_API_WS_DELETE_ACCOUNT = "/account/delete/{id}";
 
+    public static final String ROOT_API_WS_ALL_CARD = "/card/all";
     public static final String ROOT_API_WS_FIND_ALL_CARD = "/account/{id}/card/all";
     public static final String ROOT_API_WS_FIND_CARD_BY_ID = "/account/{id}/card/{cardId}";
     public static final String ROOT_API_WS_FIND_CARD_BY_NUMBER = "/account/{id}/card/number/{number}";
-    public static final String ROOT_API_WS_FIND_CARD_BY_ACCOUNT_ID = "/account/{cardId}/card/create";
     public static final String ROOT_API_WS_CREATE_CARD = "/account/{id}/card/create";
     public static final String ROOT_API_WS_UPDATE_CARD = "/account/{id}/card/update/{cardId}";
     public static final String ROOT_API_WS_DELETE_CARD = "/account/{id}/card/delete/{cardId}";
