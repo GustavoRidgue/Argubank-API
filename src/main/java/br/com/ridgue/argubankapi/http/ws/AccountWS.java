@@ -5,11 +5,16 @@ import br.com.ridgue.argubankapi.exception.AlreadyHasAccountException;
 import br.com.ridgue.argubankapi.exception.NotOldEnoughException;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Account;
+import br.com.ridgue.argubankapi.http.domain.builder.AccountBuilder;
 import br.com.ridgue.argubankapi.http.domain.response.AccountResponse;
 import br.com.ridgue.argubankapi.usecase.account.AlterAccountUseCase;
 import br.com.ridgue.argubankapi.usecase.account.FindAccountUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,10 +33,17 @@ import static br.com.ridgue.argubankapi.http.ws.url.URLMapping.*;
 public class AccountWS {
     private final FindAccountUsecase findAccountUsecase;
     private final AlterAccountUseCase alterAccountUseCase;
+    private final AccountBuilder accountBuilder;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_ACCOUNT)
-    public ResponseEntity<AccountResponse> findAll() {
-        return ResponseEntity.ok(new AccountResponse(findAccountUsecase.findAll()));
+    public ResponseEntity<AccountResponse> findAll(
+            @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable) {
+
+        Page<AccountTO> accounts = findAccountUsecase.findAll(pageable);
+
+        return ResponseEntity.ok(new AccountResponse(
+                accounts.getTotalPages(), accounts.getTotalElements(), accounts.getContent()));
     }
 
     @GetMapping(ROOT_API_WS_FIND_ACCOUNT_BY_ID)

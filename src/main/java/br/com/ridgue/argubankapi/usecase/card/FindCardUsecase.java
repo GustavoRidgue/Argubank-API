@@ -6,6 +6,8 @@ import br.com.ridgue.argubankapi.gateway.database.repository.CardRepositoryFacad
 import br.com.ridgue.argubankapi.http.domain.builder.CardBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +19,8 @@ public class FindCardUsecase {
     private final CardRepositoryFacade cardRepositoryFacade;
     private final CardBuilder cardBuilder;
 
-    public List<CardTO> findAll() {
-        List<Card> cards = cardRepositoryFacade.findAll();
-        return cardBuilder.build(cards);
+    public Page<CardTO> findAll(Pageable pageable) {
+        return cardRepositoryFacade.findAll(pageable).map(cardBuilder::build);
     }
 
     public CardTO findById(Long id) {

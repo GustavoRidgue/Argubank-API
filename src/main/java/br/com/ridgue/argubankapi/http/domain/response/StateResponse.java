@@ -13,7 +13,7 @@ import java.util.List;
 public class StateResponse extends DefaultResponse {
     private List<StateTO> stateTOS;
 
-    public StateResponse(String status, List<String> messages) {
+    public StateResponse(String status, String messages) {
         super(status, messages);
     }
 }

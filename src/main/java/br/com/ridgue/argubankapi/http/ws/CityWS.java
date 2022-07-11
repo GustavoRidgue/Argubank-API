@@ -36,7 +36,7 @@ public class CityWS {
             return ResponseEntity.ok(new CityResponse(Collections.singletonList(findCityUsecase.findById(id))));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(
-                    new CityResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
+                    new CityResponse("NOT_FOUND", e.getMessage()));
         }
     }
 
@@ -46,7 +46,7 @@ public class CityWS {
             return ResponseEntity.ok(new CityResponse(findCityUsecase.findByName(name)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(
-                    new CityResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
+                    new CityResponse("NOT_FOUND", e.getMessage()));
         }
     }
 }

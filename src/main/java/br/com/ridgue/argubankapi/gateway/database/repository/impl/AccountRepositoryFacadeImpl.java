@@ -1,22 +1,19 @@
 package br.com.ridgue.argubankapi.gateway.database.repository.impl;
 
-import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Account;
-import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import br.com.ridgue.argubankapi.gateway.database.repository.AccountRepositoryFacade;
-import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFacade;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @AllArgsConstructor
 public class AccountRepositoryFacadeImpl implements AccountRepositoryFacade {
     private final AccountRepository accountRepository;
 
-    public List<Account> findAll() {
-        return accountRepository.findAll();
+    public Page<Account> findAll(Pageable pageable) {
+        return accountRepository.findAll(pageable);
     }
 
     public Account findById(Long id) {

@@ -1,14 +1,20 @@
 package br.com.ridgue.argubankapi.http.ws;
 
+import br.com.ridgue.argubankapi.domain.AccountTO;
 import br.com.ridgue.argubankapi.domain.CardTO;
 import br.com.ridgue.argubankapi.exception.CardAlreadyCreatedException;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.http.domain.request.CardRequest;
+import br.com.ridgue.argubankapi.http.domain.response.AccountResponse;
 import br.com.ridgue.argubankapi.http.domain.response.CardResponse;
 import br.com.ridgue.argubankapi.usecase.card.AlterCardUseCase;
 import br.com.ridgue.argubankapi.usecase.card.FindCardUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,8 +35,13 @@ public class CardWS {
     private final AlterCardUseCase alterCardUseCase;
 
     @GetMapping(ROOT_API_WS_ALL_CARD)
-    public ResponseEntity<CardResponse> findByAll() {
-        return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll()));
+    public ResponseEntity<CardResponse> findByAll(
+            @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable) {
+        Page<CardTO> cards = findCardUsecase.findAll(pageable);
+
+        return ResponseEntity.ok(new CardResponse(
+                cards.getTotalPages(), cards.getTotalElements(), cards.getContent()));
     }
 
     @GetMapping(ROOT_API_WS_FIND_ALL_CARD)

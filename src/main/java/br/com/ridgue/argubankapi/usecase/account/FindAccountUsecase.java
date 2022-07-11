@@ -7,6 +7,8 @@ import br.com.ridgue.argubankapi.gateway.database.repository.AccountRepositoryFa
 import br.com.ridgue.argubankapi.http.domain.builder.AccountBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +20,8 @@ public class FindAccountUsecase {
     private final AccountRepositoryFacade accountRepositoryFacade;
     private final AccountBuilder accountBuilder;
 
-    public List<AccountTO> findAll() {
-        List<Account> accounts = accountRepositoryFacade.findAll();
-        return accountBuilder.build(accounts);
+    public Page<AccountTO> findAll(Pageable pageable) {
+        return accountRepositoryFacade.findAll(pageable).map(accountBuilder::build);
     }
 
     public AccountTO findById(Long id) {

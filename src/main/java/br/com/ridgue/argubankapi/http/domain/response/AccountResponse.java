@@ -15,7 +15,12 @@ import java.util.List;
 public class AccountResponse extends DefaultResponse {
     private List<AccountTO> accountTOS;
 
-    public AccountResponse(String status, List<String> messages) {
+    public AccountResponse(String status, String messages) {
         super(status, messages);
+    }
+
+    public AccountResponse(Integer totalPages, Long totalElements, List<AccountTO> accountTOS) {
+        super(totalPages, totalElements);
+        this.accountTOS = accountTOS;
     }
 }

@@ -3,6 +3,8 @@ package br.com.ridgue.argubankapi.gateway.database.repository.impl;
 import br.com.ridgue.argubankapi.gateway.database.entity.Card;
 import br.com.ridgue.argubankapi.gateway.database.repository.CardRepositoryFacade;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,8 +14,8 @@ import java.util.List;
 public class CardRepositoryFacadeImpl implements CardRepositoryFacade {
     private final CardRepository cardRepository;
 
-    public List<Card> findAll() {
-        return cardRepository.findAll();
+    public Page<Card> findAll(Pageable pageable) {
+        return cardRepository.findAll(pageable);
     }
 
     public Card findById(Long id) {

@@ -4,6 +4,8 @@ import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFacade;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
     private final ClientRepository clientRepository;
 
     @Override
-    public List<Client> findAll() {
-        return clientRepository.findAll();
+    public Page<Client> findAll(Pageable pageable) {
+        return clientRepository.findAll(pageable);
     }
 
     @Override

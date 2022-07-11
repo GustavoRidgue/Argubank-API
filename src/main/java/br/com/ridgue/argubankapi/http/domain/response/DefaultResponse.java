@@ -16,11 +16,18 @@ import java.util.List;
 @AllArgsConstructor
 public class DefaultResponse {
     protected String status = "SUCCESS";
+    private Integer totalPages = null;
+    private Long totalElements = null;
     private List<String> messages = new ArrayList<>();
 
     public DefaultResponse(String status, String message){
         this.status = status;
         this.messages = Collections.singletonList(message);
+    }
+
+    public DefaultResponse(Integer totalPages, Long totalElements) {
+        this.totalPages = totalPages;
+        this.totalElements = totalElements;
     }
 
     public void setMessage(String message){

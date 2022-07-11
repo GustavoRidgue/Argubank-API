@@ -14,7 +14,7 @@ import java.util.List;
 public class CityResponse extends DefaultResponse {
     private List<CityTO> cityTOS;
 
-    public CityResponse(String status, List<String> messages) {
+    public CityResponse(String status, String messages) {
         super(status, messages);
     }
 }

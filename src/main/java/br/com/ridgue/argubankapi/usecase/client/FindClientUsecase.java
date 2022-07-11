@@ -7,6 +7,8 @@ import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFac
 import br.com.ridgue.argubankapi.http.domain.builder.ClientBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +20,8 @@ public class FindClientUsecase {
     private final ClientRepositoryFacade clientRepositoryFacade;
     private final ClientBuilder clientBuilder;
 
-    public List<ClientTO> findAll() {
-        List<Client> clients = clientRepositoryFacade.findAll();
-        return clientBuilder.build(clients);
+    public Page<ClientTO> findAll(Pageable pageable) {
+        return clientRepositoryFacade.findAll(pageable).map(clientBuilder::build);
     }
 
     public ClientTO findById(Long id) throws ResourceNotFoundException {
