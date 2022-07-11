@@ -27,13 +27,7 @@ public class StateWS {
 
     @GetMapping(ROOT_API_WS_FIND_ALL_STATE)
     public ResponseEntity<StateResponse> findAll() {
-        try {
-            return ResponseEntity.ok(new StateResponse(findStateUsecase.findAll()));
-        } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return ResponseEntity.status(500).body(
-                    new StateResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new StateResponse(findStateUsecase.findAll()));
     }
 
     @GetMapping(ROOT_API_WS_FIND_STATE_BY_ID)
@@ -41,11 +35,7 @@ public class StateWS {
         try {
             return ResponseEntity.ok(new StateResponse(Collections.singletonList(findStateUsecase.findById(id))));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(404).body(
-                    new StateResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new StateResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -55,10 +45,7 @@ public class StateWS {
             return ResponseEntity.ok(new StateResponse(findStateUsecase.findByName(name)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(
-                    new StateResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new StateResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
+                    new StateResponse("NOT_FOUND", e.getMessage()));
         }
     }
 }
