@@ -27,13 +27,7 @@ public class CityWS {
 
     @GetMapping(ROOT_API_WS_FIND_ALL_CITY)
     public ResponseEntity<CityResponse> findAll() {
-        try {
-            return ResponseEntity.ok(new CityResponse(findCityUsecase.findAll()));
-        } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return ResponseEntity.status(500).body(
-                    new CityResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new CityResponse(findCityUsecase.findAll()));
     }
 
     @GetMapping(ROOT_API_WS_FIND_CITY_BY_ID)
@@ -43,9 +37,6 @@ public class CityWS {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(
                     new CityResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new CityResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
         }
     }
 
@@ -56,9 +47,6 @@ public class CityWS {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(
                     new CityResponse("NOT_FOUND", Collections.singletonList(e.getMessage())));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new CityResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
         }
     }
 }

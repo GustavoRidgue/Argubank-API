@@ -1,6 +1,8 @@
 package br.com.ridgue.argubankapi.http.ws;
 
 import br.com.ridgue.argubankapi.domain.CardTO;
+import br.com.ridgue.argubankapi.exception.CardAlreadyCreatedException;
+import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.http.domain.request.CardRequest;
 import br.com.ridgue.argubankapi.http.domain.response.CardResponse;
 import br.com.ridgue.argubankapi.usecase.card.AlterCardUseCase;
@@ -28,46 +30,24 @@ public class CardWS {
 
     @GetMapping(ROOT_API_WS_ALL_CARD)
     public ResponseEntity<CardResponse> findByAll() {
-        try {
-            return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll()));
-        } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return ResponseEntity.status(500).body(
-                    new CardResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll()));
     }
 
     @GetMapping(ROOT_API_WS_FIND_ALL_CARD)
     public ResponseEntity<CardResponse> findByAll(@PathVariable("id") Long accountId) {
-        try {
-            return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll(accountId)));
-        } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return ResponseEntity.status(500).body(
-                    new CardResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new CardResponse(findCardUsecase.findAll(accountId)));
     }
 
     @GetMapping(ROOT_API_WS_FIND_CARD_BY_ID)
     public ResponseEntity<CardResponse> findById(@PathVariable("id") Long accountId,
                                                  @PathVariable("cardId") Long id) {
-        try {
-            return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findById(accountId, id))));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new CardResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findById(accountId, id))));
     }
 
     @GetMapping(ROOT_API_WS_FIND_CARD_BY_NUMBER)
     public ResponseEntity<CardResponse> findByNumber(@PathVariable("id") Long accountId,
                                                      @PathVariable("number") String number) {
-        try {
-            return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findByNumber(accountId, number))));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    new CardResponse("INTERNAL_SERVER_ERROR", Collections.singletonList(INTERNAL_MESSAGE_ERROR)));
-        }
+        return ResponseEntity.ok(new CardResponse(Collections.singletonList(findCardUsecase.findByNumber(accountId, number))));
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CARD)
@@ -78,7 +58,7 @@ public class CardWS {
             CardTO cardTO = alterCardUseCase.create(accountId, request);
             URI uri = uriComponentsBuilder.path(ROOT_API_PATH + ROOT_API_WS_FIND_CARD_BY_ID).buildAndExpand(cardTO.getId()).toUri();
             return ResponseEntity.created(uri).body(new CardResponse(Collections.singletonList(cardTO)));
-        } catch (Exception e) {
+        } catch (CardAlreadyCreatedException | ResourceNotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
     }
