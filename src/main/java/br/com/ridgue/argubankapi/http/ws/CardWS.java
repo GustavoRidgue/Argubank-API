@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,7 +64,7 @@ public class CardWS {
 
     @PostMapping(ROOT_API_WS_CREATE_CARD)
     public ResponseEntity<CardResponse> create(@PathVariable("id") Long accountId,
-                                               @RequestBody CardRequest request,
+                                               @Valid @RequestBody CardRequest request,
                                                UriComponentsBuilder uriComponentsBuilder) {
         try {
             CardTO cardTO = alterCardUseCase.create(accountId, request);

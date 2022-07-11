@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
@@ -63,7 +64,7 @@ public class ClientWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CLIENT)
-    public ResponseEntity<ClientResponse> create(@RequestBody ClientRequest request, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientRequest request, UriComponentsBuilder uriComponentsBuilder) {
         ClientTO clientTO = alterClientUseCase.create(request);
         URI uri = uriComponentsBuilder.path(ROOT_API_PATH + ROOT_API_WS_FIND_CLIENT_BY_NAME).buildAndExpand(clientTO.getId()).toUri();
 

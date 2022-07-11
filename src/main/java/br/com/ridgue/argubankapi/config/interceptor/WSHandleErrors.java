@@ -5,6 +5,7 @@ import br.com.ridgue.argubankapi.http.domain.response.ClientResponse;
 import br.com.ridgue.argubankapi.http.domain.response.DefaultResponse;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,6 +27,11 @@ public class WSHandleErrors {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<DefaultResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.badRequest().body(new DefaultResponse("FAIL", e.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<DefaultResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest().body(new DefaultResponse("FAIL", e.getMessage()));
     }
 }
