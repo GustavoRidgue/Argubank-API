@@ -11,6 +11,8 @@ import br.com.ridgue.argubankapi.usecase.account.AlterAccountUseCase;
 import br.com.ridgue.argubankapi.usecase.account.FindAccountUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,6 +38,7 @@ public class AccountWS {
     private final AccountBuilder accountBuilder;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_ACCOUNT)
+    @Cacheable(value = "findAllAccount")
     public ResponseEntity<AccountResponse> findAll(
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
             Pageable pageable) {
@@ -63,22 +66,13 @@ public class AccountWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_ACCOUNT)
+    @CacheEvict(value = "findAllAccount", allEntries = true)
     public ResponseEntity<AccountResponse> create(@PathVariable("clientId") Long clientId, UriComponentsBuilder uriComponentsBuilder) {
         try {
             AccountTO accountTO = alterAccountUseCase.create(clientId);
             URI uri = uriComponentsBuilder.path(ROOT_API_PATH + ROOT_API_WS_FIND_CLIENT_BY_NAME).buildAndExpand(accountTO.getId()).toUri();
             return ResponseEntity.created(uri).body(new AccountResponse(Collections.singletonList(accountTO)));
         } catch (AlreadyHasAccountException | NotOldEnoughException | ResourceNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PatchMapping(ROOT_API_WS_CREATE_ACCOUNT)
-    public ResponseEntity<AccountResponse> activate(@PathVariable("clientId") Long clientId) {
-        try {
-            AccountTO accountTO = alterAccountUseCase.activate(clientId);
-            return ResponseEntity.ok(new AccountResponse(Collections.singletonList(accountTO)));
-        } catch (AlreadyHasAccountException | ResourceNotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
     }

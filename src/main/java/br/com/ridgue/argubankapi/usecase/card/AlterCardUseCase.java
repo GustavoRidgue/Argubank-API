@@ -1,10 +1,13 @@
 package br.com.ridgue.argubankapi.usecase.card;
 
+import br.com.ridgue.argubankapi.domain.AccountTO;
 import br.com.ridgue.argubankapi.domain.CardTO;
+import br.com.ridgue.argubankapi.exception.AlreadyHasAccountException;
 import br.com.ridgue.argubankapi.exception.CardAlreadyCreatedException;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Account;
 import br.com.ridgue.argubankapi.gateway.database.entity.Card;
+import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import br.com.ridgue.argubankapi.gateway.database.entity.enums.CardLevel;
 import br.com.ridgue.argubankapi.gateway.database.repository.AccountRepositoryFacade;
 import br.com.ridgue.argubankapi.gateway.database.repository.CardRepositoryFacade;
@@ -13,6 +16,8 @@ import br.com.ridgue.argubankapi.http.domain.request.CardRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -39,6 +44,26 @@ public class AlterCardUseCase {
         card.setActive(false);
 
         cardRepositoryFacade.save(card);
+
+        return cardBuilder.build(card);
+    }
+
+    public CardTO activate(Long id, Long accountId) throws ResourceNotFoundException {
+        Account account = accountRepositoryFacade.findById(accountId);
+        Card card = cardRepositoryFacade.findById(accountId, id);
+
+        if (card == null)
+            throw new ResourceNotFoundException("Account or card not found");
+
+        card.setActive(true);
+        cardRepositoryFacade.save(card);
+
+        List<Card> cards = account.getCards();
+        cards.add(card);
+
+        account.setCards(cards);
+
+        accountRepositoryFacade.save(account);
 
         return cardBuilder.build(card);
     }

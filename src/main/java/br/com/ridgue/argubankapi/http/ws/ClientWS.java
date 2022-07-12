@@ -8,6 +8,8 @@ import br.com.ridgue.argubankapi.usecase.client.AlterClientUseCase;
 import br.com.ridgue.argubankapi.usecase.client.FindClientUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,7 @@ public class ClientWS {
     private final AlterClientUseCase alterClientUseCase;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_CLIENT)
+    @Cacheable(value = "findAllClient")
     public ResponseEntity<ClientResponse> findAll(
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
             Pageable pageable) {
@@ -64,6 +67,7 @@ public class ClientWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CLIENT)
+    @CacheEvict(value = "findAllClient", allEntries = true)
     public ResponseEntity<ClientResponse> create(@Valid @RequestBody ClientRequest request, UriComponentsBuilder uriComponentsBuilder) {
         ClientTO clientTO = alterClientUseCase.create(request);
         URI uri = uriComponentsBuilder.path(ROOT_API_PATH + ROOT_API_WS_FIND_CLIENT_BY_NAME).buildAndExpand(clientTO.getId()).toUri();
@@ -72,6 +76,7 @@ public class ClientWS {
     }
 
     @PutMapping(ROOT_API_WS_UPDATE_CLIENT)
+    @CacheEvict(value = "findAllClient", allEntries = true)
     public ResponseEntity<ClientResponse> update(@PathVariable("id") Long id, @RequestBody ClientRequest request) {
         try {
             ClientTO clientTO = alterClientUseCase.update(id, request);
@@ -83,6 +88,7 @@ public class ClientWS {
     }
 
     @DeleteMapping(ROOT_API_WS_DELETE_CLIENT)
+    @CacheEvict(value = "findAllClient", allEntries = true)
     public ResponseEntity<ClientResponse> delete(@PathVariable("id") Long id) {
         try {
             alterClientUseCase.delete(id);

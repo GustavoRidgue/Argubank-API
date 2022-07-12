@@ -24,6 +24,7 @@ public final class URLMapping {
     public static final String ROOT_API_WS_FIND_ALL_CARD = "/account/{id}/card/all";
     public static final String ROOT_API_WS_FIND_CARD_BY_ID = "/account/{id}/card/{cardId}";
     public static final String ROOT_API_WS_FIND_CARD_BY_NUMBER = "/account/{id}/card/number/{number}";
+    public static final String ROOT_API_WS_ACTIVATE_CARD = "/account/{accountId}/card/{id}/activate";
     public static final String ROOT_API_WS_CREATE_CARD = "/account/{id}/card/create";
     public static final String ROOT_API_WS_UPDATE_CARD = "/account/{id}/card/update/{cardId}";
     public static final String ROOT_API_WS_DELETE_CARD = "/account/{id}/card/delete/{cardId}";

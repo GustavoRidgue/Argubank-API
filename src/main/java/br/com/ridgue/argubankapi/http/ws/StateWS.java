@@ -5,6 +5,7 @@ import br.com.ridgue.argubankapi.http.domain.response.StateResponse;
 import br.com.ridgue.argubankapi.usecase.state.FindStateUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class StateWS {
     private final FindStateUsecase findStateUsecase;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_STATE)
+    @Cacheable(value = "findAllState")
     public ResponseEntity<StateResponse> findAll() {
         return ResponseEntity.ok(new StateResponse(findStateUsecase.findAll()));
     }

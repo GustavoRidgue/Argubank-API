@@ -79,21 +79,4 @@ public class AlterAccountUseCase {
 
         return accountBuilder.build(account);
     }
-
-    public AccountTO activate(Long clientId) throws AlreadyHasAccountException, ResourceNotFoundException {
-        Client client = clientRepositoryFacade.findById(clientId);
-        Account account = accountRepositoryFacade.findById(client.getAccount().getId());
-
-        if (account == null)
-            throw new AlreadyHasAccountException("Account not found");
-
-        List<Card> cards = cardRepositoryFacade.findAll(account.getId());
-
-        account.setCards(cards);
-        account.setActive(true);
-
-        accountRepositoryFacade.save(account);
-
-        return accountBuilder.build(account);
-    }
 }

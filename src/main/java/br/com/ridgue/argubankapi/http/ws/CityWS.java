@@ -5,6 +5,7 @@ import br.com.ridgue.argubankapi.http.domain.response.CityResponse;
 import br.com.ridgue.argubankapi.usecase.city.FindCityUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class CityWS {
     private final FindCityUsecase findCityUsecase;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_CITY)
+    @Cacheable(value = "findAllCity")
     public ResponseEntity<CityResponse> findAll() {
         return ResponseEntity.ok(new CityResponse(findCityUsecase.findAll()));
     }
