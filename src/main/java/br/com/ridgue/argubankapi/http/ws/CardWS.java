@@ -40,7 +40,6 @@ public class CardWS {
     private final AlterCardUseCase alterCardUseCase;
 
     @GetMapping(ROOT_API_WS_ALL_CARD)
-    @Cacheable(value = "findAllCard")
     public ResponseEntity<CardResponse> findByAll(
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
             Pageable pageable) {
@@ -68,7 +67,6 @@ public class CardWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_CARD)
-    @CacheEvict(value = "findAllAccount", allEntries = true)
     public ResponseEntity<CardResponse> create(@PathVariable("id") Long accountId,
                                                @Valid @RequestBody CardRequest request,
                                                UriComponentsBuilder uriComponentsBuilder) {
@@ -81,7 +79,6 @@ public class CardWS {
         }
     }
 
-    @CacheEvict(value = "findAllCard", allEntries = true)
     @PatchMapping(ROOT_API_WS_ACTIVATE_CARD)
     public ResponseEntity<CardResponse> activate(@PathVariable("id") Long id,
                                                  @PathVariable("accountId") Long accountId) {

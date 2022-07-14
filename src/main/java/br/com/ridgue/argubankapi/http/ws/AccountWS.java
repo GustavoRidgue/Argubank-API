@@ -38,7 +38,6 @@ public class AccountWS {
     private final AccountBuilder accountBuilder;
 
     @GetMapping(ROOT_API_WS_FIND_ALL_ACCOUNT)
-    @Cacheable(value = "findAllAccount")
     public ResponseEntity<AccountResponse> findAll(
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.ASC)
             Pageable pageable) {
@@ -66,7 +65,6 @@ public class AccountWS {
     }
 
     @PostMapping(ROOT_API_WS_CREATE_ACCOUNT)
-    @CacheEvict(value = "findAllAccount", allEntries = true)
     public ResponseEntity<AccountResponse> create(@PathVariable("clientId") Long clientId, UriComponentsBuilder uriComponentsBuilder) {
         try {
             AccountTO accountTO = alterAccountUseCase.create(clientId);
