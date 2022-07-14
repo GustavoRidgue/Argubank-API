@@ -1,5 +1,6 @@
 package br.com.ridgue.argubankapi.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,8 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private AuthenticationService service;
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {}
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(service);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
