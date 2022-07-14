@@ -43,4 +43,9 @@ public class ClientRepositoryFacadeImpl implements ClientRepositoryFacade {
     public void delete(Long id) {
         clientRepository.deleteById(id);
     }
+
+    @Override
+    public Client findByEmail(String email) {
+        return clientRepository.findByEmail(email).orElse(null);
+    }
 }

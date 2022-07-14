@@ -13,4 +13,5 @@ public interface ClientRepositoryFacade {
     List<Client> findByName(String name) throws ResourceNotFoundException;
     void save(Client client);
     void delete(Long id);
+    Client findByEmail(String email);
 }
