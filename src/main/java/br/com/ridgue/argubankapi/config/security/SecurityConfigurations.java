@@ -16,7 +16,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) {}
 
     @Override
-    protected void configure(HttpSecurity http) {
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/client/create").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/state/**", "/api/city/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
     }
 
     @Override
