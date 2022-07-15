@@ -21,7 +21,7 @@ public class ClientRequest {
     private String phoneNumber;
     @NotNull @NotEmpty @Email @Size(max = 255)
     private String email;
-    @NotNull @NotEmpty @Size(max = 14, min = 6)
+    @NotNull @NotEmpty @Size(min = 6)
     private String password;
     @Past
     private LocalDate birthDate;

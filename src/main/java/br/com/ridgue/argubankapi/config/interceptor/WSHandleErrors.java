@@ -5,6 +5,7 @@ import br.com.ridgue.argubankapi.http.domain.response.ClientResponse;
 import br.com.ridgue.argubankapi.http.domain.response.DefaultResponse;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,5 +34,10 @@ public class WSHandleErrors {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<DefaultResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest().body(new DefaultResponse("FAIL", e.getMessage()));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<DefaultResponse> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity.status(403).body(new DefaultResponse("FAIL", e.getMessage()));
     }
 }
