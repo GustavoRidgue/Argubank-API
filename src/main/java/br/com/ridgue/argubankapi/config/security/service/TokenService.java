@@ -1,4 +1,4 @@
-package br.com.ridgue.argubankapi.config.security;
+package br.com.ridgue.argubankapi.config.security.service;
 
 import br.com.ridgue.argubankapi.domain.TokenTO;
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
@@ -28,10 +28,10 @@ public class TokenService {
         Client principal = (Client) auth.getPrincipal();
         String token = buildToken(principal, today, expirationDate);
 
-        return getTokenTO(token, today, expirationDate);
+        return getTokenTO(token, expirationDate);
     }
 
-    private TokenTO getTokenTO(String token, Date today, Date expirationDate) {
+    private TokenTO getTokenTO(String token, Date expirationDate) {
         TokenTO to = new TokenTO();
         to.setToken(token);
         to.setType("Bearer");

@@ -1,4 +1,4 @@
-package br.com.ridgue.argubankapi.config.security;
+package br.com.ridgue.argubankapi.config.security.service;
 
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFacade;

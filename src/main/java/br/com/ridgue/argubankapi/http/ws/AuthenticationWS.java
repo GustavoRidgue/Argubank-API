@@ -1,6 +1,6 @@
 package br.com.ridgue.argubankapi.http.ws;
 
-import br.com.ridgue.argubankapi.config.security.TokenService;
+import br.com.ridgue.argubankapi.config.security.service.TokenService;
 import br.com.ridgue.argubankapi.http.domain.request.AuthRequest;
 import br.com.ridgue.argubankapi.http.domain.response.TokenResponse;
 import lombok.AllArgsConstructor;
