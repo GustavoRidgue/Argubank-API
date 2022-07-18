@@ -8,8 +8,6 @@ import br.com.ridgue.argubankapi.http.domain.builder.ClientBuilder;
 import br.com.ridgue.argubankapi.http.domain.request.ClientRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,7 +19,6 @@ import java.time.Period;
 public class AlterClientUseCase {
     private final ClientRepositoryFacade clientRepositoryFacade;
     private final ClientBuilder clientBuilder;
-    private final PasswordEncoder passwordEncoder;
 
     public ClientTO create(ClientRequest request) {
         Client client = new Client();
@@ -30,7 +27,7 @@ public class AlterClientUseCase {
         client.setRg(request.getRg());
         client.setCnh(request.getCnh());
         client.setEmail(request.getEmail());
-        client.setPassword(passwordEncoder.encode(request.getPassword()));
+        client.setPassword(request.getPassword());
         client.setPhoneNumber(request.getPhoneNumber());
         client.setBirthDate(request.getBirthDate());
         client.setAge(Period.between(request.getBirthDate(), LocalDate.now()).getYears());

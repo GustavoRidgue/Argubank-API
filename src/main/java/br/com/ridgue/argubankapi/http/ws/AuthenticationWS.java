@@ -2,6 +2,7 @@ package br.com.ridgue.argubankapi.http.ws;
 
 import br.com.ridgue.argubankapi.config.security.TokenService;
 import br.com.ridgue.argubankapi.http.domain.request.AuthRequest;
+import br.com.ridgue.argubankapi.http.domain.response.TokenResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import java.util.Collections;
 
 import static br.com.ridgue.argubankapi.http.ws.url.URLMapping.ROOT_API_PATH;
 import static br.com.ridgue.argubankapi.http.ws.url.URLMapping.ROOT_API_WS_AUTH;
@@ -32,11 +35,10 @@ public class AuthenticationWS {
     private final TokenService tokenService;
 
     @PostMapping(ROOT_API_WS_AUTH)
-    public ResponseEntity<?> login(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthRequest request) {
         UsernamePasswordAuthenticationToken login = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
-        Authentication authentication = authManager.authenticate(login);
-        String token = tokenService.generateToken(authentication);
-        log.info(token);
-        return ResponseEntity.ok().body(token);
+        Authentication auth = authManager.authenticate(login);
+
+        return ResponseEntity.ok(new TokenResponse(Collections.singletonList(tokenService.generateToken(auth))));
     }
 }
