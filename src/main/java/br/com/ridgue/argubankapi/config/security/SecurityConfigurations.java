@@ -1,6 +1,8 @@
 package br.com.ridgue.argubankapi.config.security;
 
 import br.com.ridgue.argubankapi.config.security.service.AuthenticationService;
+import br.com.ridgue.argubankapi.config.security.service.TokenService;
+import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +22,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationService service;
+    private AuthenticationService authService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private ClientRepositoryFacade clientRepositoryFacade;
 
     @Override
     @Bean
@@ -30,7 +38,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(authService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -44,7 +52,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-                .addFilterBefore(new AuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationTokenFilter(tokenService, clientRepositoryFacade), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

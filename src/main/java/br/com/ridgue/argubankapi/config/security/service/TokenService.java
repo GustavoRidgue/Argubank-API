@@ -1,7 +1,10 @@
 package br.com.ridgue.argubankapi.config.security.service;
 
 import br.com.ridgue.argubankapi.domain.TokenTO;
+import br.com.ridgue.argubankapi.exception.InvalidTokenFormatException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,29 @@ public class TokenService {
         String token = buildToken(principal, today, expirationDate);
 
         return getTokenTO(token, expirationDate);
+    }
+
+    public void validateToken(String token) throws InvalidTokenFormatException {
+        try {
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token);
+        } catch (Exception e) {
+            throw new InvalidTokenFormatException("Either the header is empty or it contains a invalid formatted token");
+        }
+    }
+
+    public Long getUserId(String token) throws InvalidTokenFormatException {
+        try {
+            return Long.parseLong(Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject());
+
+        } catch (Exception e) {
+            throw new InvalidTokenFormatException("Either the header is empty or it contains a invalid formatted token");
+        }
     }
 
     private TokenTO getTokenTO(String token, Date expirationDate) {
