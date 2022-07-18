@@ -2,6 +2,7 @@ package br.com.ridgue.argubankapi.config.security.service;
 
 import br.com.ridgue.argubankapi.domain.TokenTO;
 import br.com.ridgue.argubankapi.exception.InvalidTokenFormatException;
+import br.com.ridgue.argubankapi.exception.TokenNotAuthenticatedException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -34,13 +35,13 @@ public class TokenService {
         return getTokenTO(token, expirationDate);
     }
 
-    public void validateToken(String token) throws InvalidTokenFormatException {
+    public void validateToken(String token) throws TokenNotAuthenticatedException {
         try {
             Jws<Claims> claimsJws = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token);
         } catch (Exception e) {
-            throw new InvalidTokenFormatException("Either the header is empty or it contains a invalid formatted token");
+            throw new TokenNotAuthenticatedException("This token is not authenticated");
         }
     }
 

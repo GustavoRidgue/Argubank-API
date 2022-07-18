@@ -5,6 +5,7 @@ import br.com.ridgue.argubankapi.exception.InvalidTokenFormatException;
 import br.com.ridgue.argubankapi.exception.ResourceNotFoundException;
 import br.com.ridgue.argubankapi.gateway.database.entity.Client;
 import br.com.ridgue.argubankapi.gateway.database.repository.ClientRepositoryFacade;
+import br.com.ridgue.argubankapi.http.ws.url.URLMapping;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -30,15 +33,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) {
 
-        if (request.getMethod().equals("POST") &&
-                request.getRequestURI().equals("/ridgue/api/client/create") || request.getRequestURI().equals("/ridgue/api/auth")) {
-            filterChain.doFilter(request, response);
-        } else {
+        if (URLMapping.requireAuthentication(request.getRequestURI(), request.getMethod())){
             String token = validateToken(request);
             authenticateToken(token);
-
-            filterChain.doFilter(request, response);
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private String validateToken(HttpServletRequest request) throws InvalidTokenFormatException {

@@ -1,8 +1,14 @@
 package br.com.ridgue.argubankapi.http.ws.url;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public final class URLMapping {
     private URLMapping() {}
 
+    public static final String CONTEXT_PATH = "/ridgue";
     public static final String ROOT_API_PATH = "/api";
 
     public static final String ROOT_API_WS_AUTH = "/auth";
@@ -38,4 +44,17 @@ public final class URLMapping {
     public static final String ROOT_API_WS_FIND_ALL_STATE = "/state/all";
     public static final String ROOT_API_WS_FIND_STATE_BY_ID = "/state/{id}";
     public static final String ROOT_API_WS_FIND_STATE_BY_NAME = "/state/name/{name}";
+
+    public static boolean requireAuthentication(String url, String method) {
+        HashMap<String, String> urls = new HashMap<>();
+        urls.put(CONTEXT_PATH + ROOT_API_PATH + "/client/create", "POST");
+        urls.put(CONTEXT_PATH + ROOT_API_PATH + "/auth", "POST");
+
+        for (Map.Entry<String, String> set : urls.entrySet()) {
+            if (set.getKey().equals(url) && set.getValue().equals(method)
+                    || url.equals(CONTEXT_PATH + ROOT_API_PATH + "/h2-console"))
+                return false;
+        }
+        return true;
+    }
 }
