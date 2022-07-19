@@ -8,6 +8,7 @@ import br.com.ridgue.argubankapi.http.domain.builder.ClientBuilder;
 import br.com.ridgue.argubankapi.http.domain.request.ClientRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,13 +22,15 @@ public class AlterClientUseCase {
     private final ClientBuilder clientBuilder;
 
     public ClientTO create(ClientRequest request) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         Client client = new Client();
         client.setName(request.getName());
         client.setCpf(request.getCpf());
         client.setRg(request.getRg());
         client.setCnh(request.getCnh());
         client.setEmail(request.getEmail());
-        client.setPassword(request.getPassword());
+        client.setPassword(encoder.encode(request.getPassword()));
         client.setPhoneNumber(request.getPhoneNumber());
         client.setBirthDate(request.getBirthDate());
         client.setAge(Period.between(request.getBirthDate(), LocalDate.now()).getYears());
