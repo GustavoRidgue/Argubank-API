@@ -51,8 +51,7 @@ public final class URLMapping {
         urls.put(CONTEXT_PATH + ROOT_API_PATH + "/auth", "POST");
 
         for (Map.Entry<String, String> set : urls.entrySet()) {
-            if (set.getKey().equals(url) && set.getValue().equals(method)
-                    || url.equals(CONTEXT_PATH + ROOT_API_PATH + "/h2-console"))
+            if (set.getKey().equals(url) && set.getValue().equals(method))
                 return false;
         }
         return true;

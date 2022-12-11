@@ -43,7 +43,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         if (authorization == null || authorization.isEmpty() || !authorization.startsWith("Bearer "))
-            throw new InvalidTokenFormatException("Either the header is empty or it contains a invalid formatted token");
+            throw new InvalidTokenFormatException("Header Authorization is empty or it contains an invalid formatted token");
 
         String token = authorization.substring(7);
         tokenService.validateToken(token);
